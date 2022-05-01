@@ -47,8 +47,6 @@ var miValorNegocio = document.getElementById('negocio').value,
 
 var IDdelNegocio = "";
 
-const DOMnegocioId = document.querySelector('#idNegocio');
-
 
 const formNegocio = document.getElementById('form-negocio'),
     miBoton = document.getElementById('boton');
@@ -64,10 +62,10 @@ firebase.initializeApp({
 });
 var db = firebase.firestore();
 
-
+const DOMnegocioId = document.querySelector('#idNegocio');
 
 // Solo tengo el numero de Celular de la persona  y su contraseña
-function consultaNombreNegocio(numeroDeTelefono) {
+function consultaIDNegocio(numeroDeTelefono) {
     // Create a reference to the negociosRef collection
     let negociosRef = db.collection("negocios").where("telefono", "==", numeroDeTelefono);
 
@@ -649,4 +647,4 @@ function resetValidaciones() {
 }
 
 /// Ejecuta al iniciar
-consultaNombreNegocio("5545158142");
+consultaIDNegocio("5545158142");

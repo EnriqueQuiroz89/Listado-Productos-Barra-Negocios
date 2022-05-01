@@ -26,6 +26,7 @@ firebase.initializeApp({
 
 var db = firebase.firestore();
 
+
 // Carga incialmente
 //datosParaWhatsApp();
 //consultaDatosDelNegocio();
@@ -107,9 +108,13 @@ function leerDatos() {
 }
 
 function configuraWhatsApp(nombreNegocio, telefonoNegcio) {
+
     console.log("Nombre del negocio =>" + nombreNegocio);
     console.log("Telefono del negocio =>" + telefonoNegcio);
+
 }
+
+
 
 function datosParaWhatsApp() {
 
@@ -124,6 +129,12 @@ function datosParaWhatsApp() {
         .catch((error) => {
             console.log("Error getting documents: ", error);
         });
+
     // console.log("Articulo: " + articulo + " Descripcion: " + descripcion + " Precio: " + precio + " Imagen: " + imagen);
     // window.open("https://wa.me/5215545158142?text=Quiero%20Una%20Hamburguesa%20" + articulo + "%20/t%20Contiene%20" + descripcion + "%20Con%20Precio%20de%20" + precio + "%20/n/n/n/n/n%20Precio%20de%20" + precio)
 }
+
+
+
+
+

@@ -57,6 +57,27 @@ firebase.initializeApp({
 
 var db = firebase.firestore();
 
+
+
+const DOMnegocioId = document.querySelector('#idNegocio');
+
+// Solo tengo el numero de Celular de la persona  y su contraseña
+function consultaIDNegocio(numeroDeTelefono) {
+    // Create a reference to the negociosRef collection
+    let negociosRef = db.collection("negocios").where("telefono", "==", numeroDeTelefono);
+
+    negociosRef.get().then((querySnapshot) => {
+        // No puede ser uno solo por que nada garantiza que se unico elemento
+        querySnapshot.forEach((doc) => {
+            //console.log(doc.id, "=>", doc.data());
+            DOMnegocioId.value = doc.id;
+        })
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+}
+
+
 //Controla la accion del boton enviar
 // controlar Funcion Submit del formulario
 form.addEventListener('submit', (e) => {
@@ -424,10 +445,12 @@ function uploadFile(file) {
 // Agregar documentos
 function guardar() {
     //Almacena contenido de los campos
-    var articulo = document.getElementById('articulo').value,
+    let articulo = document.getElementById('articulo').value,
         descripcion = document.getElementById('descripcion').value,
         precio = document.getElementById('precio').value,
-        imagen = document.getElementById('imagen').value;
+        imagen = document.getElementById('imagen').value,
+        idNegocio = document.getElementById('idNegocio').value;
+
     //Calcula fecha y hora Actual para registrar hora de creacion
     let timeStamp = new Date(Date.now());
 
@@ -438,6 +461,7 @@ function guardar() {
         imagen: imagen,
         fechaHoraCreacion: timeStamp,
         fechaHoraModificacion: timeStamp,
+        idNegocio: idNegocio
 
     })
         .then((docRef) => {
@@ -462,13 +486,21 @@ var table = document.getElementById('table');
  * Se Elimina .get().then((querySnapshot)...) y queda .onSnapshot((querySnapshot)...) 
  */
 function renderizaArticulos() {
+    // Create a reference to the negociosRef collection
+    let articulosRef = db.collection("articulos")
+        .where("idNegocio", "==", "SKp6WJ8feVlnb7n1XWjb");
 
-    let comprasRef = db.collection("articulos");
-    comprasRef.orderBy("fechaHoraModificacion", "desc").onSnapshot((querySnapshot) => {
-        table.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data().fechaHora}`);
-            table.innerHTML += `
+    articulosRef
+       // Renderizar articulos
+        .get()
+        .then((querySnapshot) => {
+            // OPCION 2
+            //   .onSnapshot((querySnapshot) => {
+            // No puede ser uno solo por que nada garantiza que se unico elemento
+            querySnapshot.forEach((doc) => {
+                console.log(doc.id, "=>", doc.data());
+
+                table.innerHTML += `
         <tr>
         <td>${doc.data().articulo}</td>
         <td>${doc.data().descripcion}</td>
@@ -481,10 +513,12 @@ function renderizaArticulos() {
         </tr>
         <tr></tr>        
         <tr></tr>                
-        `
-
+       `
+            })
+        }).catch((error) => {
+            console.log("Error getting document:", error);
         });
-    });
+
 }
 
 
@@ -537,13 +571,15 @@ function editar(id, articulo, descripcion, precio, imagen) {
     btnGuardarEdicion.onclick = function () {
         // El ID no va a cambiar
 
-       
+
         let compraRef = db.collection("articulos").doc(id);
         // Capturar los cambios realizados en los campos
         let articuloEditado = document.getElementById('articulo').value,
             descripcionEditada = document.getElementById('descripcion').value,
             precioEditado = document.getElementById('precio').value,
-            imagenEditada = document.getElementById('imagen').value;
+            imagenEditada = document.getElementById('imagen').value,
+            idNegocio = document.getElementById('idNegocio').value;
+
         // Calcula la fecha y hora actual del cambio 
         let timeStamp = new Date(Date.now());
 
@@ -554,6 +590,7 @@ function editar(id, articulo, descripcion, precio, imagen) {
             precio: Number(precioEditado),
             imagen: imagenEditada,
             fechaHoraModificacion: timeStamp,
+            idNegocio: idNegocio
         })
             .then(() => {
                 console.log("Document successfully updated!");
@@ -620,3 +657,5 @@ function resetValidaciones() {
 
 /// Siempre al iniciar
 renderizaArticulos();
+// 
+consultaIDNegocio("5545158142")

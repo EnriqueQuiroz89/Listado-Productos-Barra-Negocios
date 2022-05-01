@@ -30,14 +30,13 @@ var piezasTotalesGlobal = 0.0;
 var telefonoNegocioGlobal = ""
 var nombreNegocioGlobal = ""
 
-
 //Renderizar Articulos
 function renderizarNegociosFirebase() {
 
     let articulosRef = db.collection("negocios");
 
     articulosRef
-      //  .orderBy("fechaHoraModificacion", "desc")
+        //  .orderBy("fechaHoraModificacion", "desc")
         .onSnapshot((querySnapshot) => {
             //table.innerHTML = "";
             // console.log(`${doc.id} => ${doc.data().fechaHora}`);
@@ -85,13 +84,12 @@ function renderizarNegociosFirebase() {
                 miNodoCardBody.appendChild(miNodoImagen);
                 miNodoCardBody.appendChild(miNodoTexto);
                 miNodoCardBody.appendChild(miNodoPrecio);
-                miNodoCardBody.appendChild(miNodoBoton);
+                //miNodoCardBody.appendChild(miNodoBoton);
                 miNodo.appendChild(miNodoCardBody);
                 DOMnegocios.appendChild(miNodo);
             });
         });
 }
-
 
 function renderizaIdentidadDelNegocio(nombreColeccion, idNegocio) {
     // let idNegocio = "SKp6WJ8feVlnb7n1XWjb"
@@ -237,61 +235,64 @@ function renderizarBotonVaciarCarrito() {
 //Renderizar Articulos
 function renderizarArticulosFirebase() {
 
-    let articulosRef = db.collection("articulos");
+    let articulosRef = db.collection("articulos")
+        .where("idNegocio", "==", "SKp6WJ8feVlnb7n1XWjb");
 
-    articulosRef.orderBy("fechaHoraModificacion", "desc").onSnapshot((querySnapshot) => {
-        //table.innerHTML = "";
-        // console.log(`${doc.id} => ${doc.data().fechaHora}`);
+    articulosRef
+        //   .orderBy("fechaHoraModificacion", "desc")
+        .onSnapshot((querySnapshot) => {
+            //table.innerHTML = "";
+            // console.log(`${doc.id} => ${doc.data().fechaHora}`);
 
-        // POr cada Nodo o DOcumento en Firebase
-        // Equivalente NODO a DOCUMENTO
-        querySnapshot.forEach((doc) => {
-            // Estructura
-            const miNodo = document.createElement('div');
-            //miNodo.classList.add('card', 'col-sm-4');
-            miNodo.classList.add('card')
+            // POr cada Nodo o DOcumento en Firebase
+            // Equivalente NODO a DOCUMENTO
+            querySnapshot.forEach((doc) => {
+                // Estructura
+                const miNodo = document.createElement('div');
+                //miNodo.classList.add('card', 'col-sm-4');
+                miNodo.classList.add('card')
 
-            // Body
-            const miNodoCardBody = document.createElement('div');
-            //miNodoCardBody.classList.add('card-body');
-            miNodo.classList.add('card-body')
+                // Body
+                const miNodoCardBody = document.createElement('div');
+                //miNodoCardBody.classList.add('card-body');
+                miNodo.classList.add('card-body')
 
-            // Titulo
-            const miNodoTitle = document.createElement('h5');
-            miNodoTitle.classList.add('card-title');
-            miNodoTitle.textContent = doc.data().articulo;
-            // Imagen
-            const miNodoImagen = document.createElement('img');
-            miNodoImagen.classList.add('img-fluid');
-            miNodoImagen.setAttribute('src', doc.data().imagen);
-            // Precio
-            const miNodoTexto = document.createElement('p');
-            miNodoTexto.classList.add('card-text');
-            miNodoTexto.textContent = `${doc.data().descripcion}`;
-            // Precio
-            const miNodoPrecio = document.createElement('p');
-            miNodoPrecio.classList.add('card-price');
-            miNodoPrecio.textContent = `${divisa} ${doc.data().precio}`;
-            // Boton 
+                // Titulo
+                const miNodoTitle = document.createElement('h5');
+                miNodoTitle.classList.add('card-title');
+                miNodoTitle.textContent = doc.data().articulo;
+                // Imagen
+                const miNodoImagen = document.createElement('img');
+                miNodoImagen.classList.add('img-fluid');
+                miNodoImagen.setAttribute('src', doc.data().imagen);
+                // Precio
+                const miNodoTexto = document.createElement('p');
+                miNodoTexto.classList.add('card-text');
+                miNodoTexto.textContent = `${doc.data().descripcion}`;
+                // Precio
+                const miNodoPrecio = document.createElement('p');
+                miNodoPrecio.classList.add('card-price');
+                miNodoPrecio.textContent = `${divisa} ${doc.data().precio}`;
+                // Boton 
 
-            const miNodoBoton = document.createElement('button');
-            miNodoBoton.classList.add('btn', 'btn-primary');
-            miNodoBoton.textContent = 'Agregar al Pedido';
-            miNodoBoton.setAttribute('marcador', doc.id);
-            // miNodoBoton.setAttribute('onclick', "anyadirProductoAlCarritoVersion2(" + doc.data().precio + ")");
-            //Agregar funcion On click con los dtaos del articulo seleccionado
-            miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
-            // Insertamos
+                const miNodoBoton = document.createElement('button');
+                miNodoBoton.classList.add('btn', 'btn-primary');
+                miNodoBoton.textContent = 'Agregar al Pedido';
+                miNodoBoton.setAttribute('marcador', doc.id);
+                // miNodoBoton.setAttribute('onclick', "anyadirProductoAlCarritoVersion2(" + doc.data().precio + ")");
+                //Agregar funcion On click con los dtaos del articulo seleccionado
+                miNodoBoton.addEventListener('click', anyadirProductoAlCarrito);
+                // Insertamos
 
-            miNodoCardBody.appendChild(miNodoTitle);
-            miNodoCardBody.appendChild(miNodoImagen);
-            miNodoCardBody.appendChild(miNodoTexto);
-            miNodoCardBody.appendChild(miNodoPrecio);
-            miNodoCardBody.appendChild(miNodoBoton);
-            miNodo.appendChild(miNodoCardBody);
-            DOMarticulos.appendChild(miNodo);
+                miNodoCardBody.appendChild(miNodoTitle);
+                miNodoCardBody.appendChild(miNodoImagen);
+                miNodoCardBody.appendChild(miNodoTexto);
+                miNodoCardBody.appendChild(miNodoPrecio);
+                miNodoCardBody.appendChild(miNodoBoton);
+                miNodo.appendChild(miNodoCardBody);
+                DOMarticulos.appendChild(miNodo);
+            });
         });
-    });
 
 
 }
@@ -693,10 +694,9 @@ DOMcarrito.addEventListener('change', (event) => {
 })
 
 /***Al iniciar */
-
-renderizarNegociosFirebase()
-
 consultaNombreNegocio();
+
+renderizarNegociosFirebase() 
 
 renderizaIdentidadDelNegocio("negocios", "SKp6WJ8feVlnb7n1XWjb");
 // let idNegocio = "SKp6WJ8feVlnb7n1XWjb"
@@ -704,7 +704,6 @@ renderizaIdentidadDelNegocio("negocios", "SKp6WJ8feVlnb7n1XWjb");
 
 cargarCarritoDeLocalStorage();
 renderizarArticulosFirebase();
-
 renderizarCarrito();
 // Ahora voy a mostra los totales;
 renderizarTotales()

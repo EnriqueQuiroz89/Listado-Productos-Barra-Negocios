@@ -216,13 +216,15 @@ h2 {
     width: 100%;
 }
 
-
 .menu-negocios {
     display: flex;
     flex-direction: row;
+    max-width: 800px;
+    height: 400px;
+    margin:  20px auto;
+    background: paleturquoise;
+    overflow-x: scroll;
 }
-
-
 
 @media (max-width: 600px) {
     .identidad-negocio {
